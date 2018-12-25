@@ -61,7 +61,8 @@
 </template>
 
 <script>
-import { mapActions, mpaGetters, mapGetters } from "vuex";
+import { mapActions, mapGetters } from "vuex";
+
 export default {
   name: "Register",
   data() {
@@ -75,13 +76,7 @@ export default {
   methods: {
     ...mapActions(["register"]),
     submitRegisterForm() {
-      this.register(this.user)
-        .then(() => {
-          router.push({ name: "home" });
-        })
-        .catch(error => {
-          this.errors = error.response.data.message;
-        });
+      this.register(this.user);
     }
   },
   computed: {

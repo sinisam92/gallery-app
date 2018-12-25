@@ -40,15 +40,12 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import router from "./../../router";
 export default {
   name: "Navbar",
   methods: {
     ...mapActions(["logout"]),
     logoutOnClick() {
-      this.logout().then(() => {
-        router.push({ name: "login" });
-      });
+      this.logout();
     }
   },
   computed: {
@@ -59,6 +56,9 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+nav {
+  background-color: #b6c1c3;
+}
 </style>
 

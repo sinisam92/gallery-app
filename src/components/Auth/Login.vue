@@ -44,13 +44,7 @@ export default {
   methods: {
     ...mapActions(["login"]),
     submitLoginForm() {
-      this.login(this.user)
-        .then(() => {
-          router.push({ name: "home" });
-        })
-        .catch(error => {
-          this.errors = error.response.data.message;
-        });
+      this.login(this.user);
     }
   },
   computed: {
