@@ -29,7 +29,7 @@
               <router-link class="nav-link" to="/register" v-if="!user">REGISTER</router-link>
             </li>
             <li class="nav-item">
-              <a class="nav-link" @click="logoutOnClick" v-if="user">LOGOUT</a>
+              <a class="nav-link" role="button" @click="logoutOnClick" v-if="user">LOGOUT</a>
             </li>
           </ul>
         </div>
@@ -40,12 +40,15 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
+import router from "./../../router";
 export default {
   name: "Navbar",
   methods: {
     ...mapActions(["logout"]),
     logoutOnClick() {
-      this.logout();
+      this.logout().then(() => {
+        router.push({ name: "login" });
+      });
     }
   },
   computed: {

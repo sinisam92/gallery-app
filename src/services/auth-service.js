@@ -1,11 +1,14 @@
 import http from './http-service';
 
 class AuthService {
-  login(email, password) {
-    return http.post('auth/login', { email, password }).then((response) => {
+  async login(email, password) {
+    try {
+      const response = await http.post('auth/login', { email, password });
       this.setDataForLogin(response.data);
       return response;
-    });
+    } catch (error) {
+      Promise.reject(error.response.data.errors);
+    }
   }
   register({
     first_name,
