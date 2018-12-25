@@ -3,7 +3,6 @@
     <div class="input-group mb-3">
       <input
         type="text"
-        @input="clearSearch"
         v-model="searchTerm"
         class="form-control"
         placeholder="Search..."
@@ -13,7 +12,7 @@
       <div class="input-group-append">
         <button
           class="btn btn-outline-secondary input-button"
-          @click="filterGalleries"
+         
           type="button"
         >Filter</button>
       </div>
@@ -29,9 +28,9 @@ export default {
     };
   },
   methods: {
-    filterGalelries() {
-      this.$emit("searchTerm", this.searchTerm);
-    }
+    // filterGalelries() {
+    //   this.$emit("searchTerm", this.searchTerm);
+    // }
   }
 };
 </script>
