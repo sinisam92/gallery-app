@@ -3,14 +3,31 @@ import VueRouter from 'vue-router';
 import AppGalleries from './components/AppGalleries';
 import Login from './components/Auth/Login';
 import Register from './components/Auth/Register';
+import SingleGallery from './components/SingleGallery';
+import BootstrapVue from 'bootstrap-vue';
+import 'bootstrap/dist/css/bootstrap.css';
+import 'bootstrap-vue/dist/bootstrap-vue.css';
 
+Vue.use(BootstrapVue);
 Vue.use(VueRouter);
 
 const routes = [
   {
     path: '/',
+    redirect: '/galleries'
+  },
+  {
+    path: '/galleries',
     name: 'home',
     component: AppGalleries,
+    meta: {
+      auth: false
+    }
+  },
+  {
+    path: '/galleries/:id',
+    name: 'single-gallery',
+    component: SingleGallery,
     meta: {
       auth: false
     }

@@ -5,11 +5,15 @@
       <div class="card h-100">
         <img class="card-img-top" :src="gallery.images[0].image_url" alt>
         <div class="card-body">
-          <h4 class="card-title">
-            <a href="#">{{ gallery.title }}</a>
-          </h4>
+          <router-link :to="{ name: 'single-gallery', params: { id: gallery.id }}">
+            <h4 class="card-title">
+              <a href="#">{{ gallery.title }}</a>
+            </h4>
+          </router-link>
           <p>Author:</p>
-          <h4 class="box-title">{{ gallery.user.first_name }} {{ gallery.user.last_name }}</h4>
+          <router-link to="#" class="box-title">
+            <h4>{{ gallery.user.first_name }} {{ gallery.user.last_name }}</h4>
+          </router-link>
           <small>Created at: {{ gallery.created_at | formatDate }}</small>
           <p class="card-text"></p>
         </div>
