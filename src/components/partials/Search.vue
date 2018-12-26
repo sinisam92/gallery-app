@@ -10,11 +10,9 @@
         aria-describedby="basic-addon2"
       >
       <div class="input-group-append">
-        <button
-          class="btn btn-outline-secondary input-button"
-         
-          type="button"
-        >Filter</button>
+        <button @click="filterGalleries" class="btn btn-outline-secondary input-button">
+          <i class="fas fa-search"></i>
+        </button>
       </div>
     </div>
   </div>
@@ -28,9 +26,9 @@ export default {
     };
   },
   methods: {
-    // filterGalelries() {
-    //   this.$emit("searchTerm", this.searchTerm);
-    // }
+    filterGalleries() {
+      this.$emit("searchTerm", this.searchTerm);
+    }
   }
 };
 </script>

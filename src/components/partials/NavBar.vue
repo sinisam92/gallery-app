@@ -1,8 +1,10 @@
 <template>
   <div>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
       <div class="container">
-        <router-link class="navbar-brand" to="/">GALLERIES APP</router-link>
+        <router-link class="navbar-brand" to="/">All Galleries</router-link>
+        <router-link class="navbar-brand" to="#" v-if="user">My Galleries</router-link>
+        <router-link class="navbar-brand" to="#" v-if="user">Create New Gallery</router-link>
         <button
           class="navbar-toggler"
           type="button"
@@ -16,20 +18,14 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ml-auto">
-            <li class="nav-item active">
-              <router-link class="nav-link" to="/">
-                HOME
-                <span class="sr-only">(current)</span>
-              </router-link>
+            <li class="nav-item">
+              <router-link class="nav-link" to="/login" v-if="!user">Login</router-link>
             </li>
             <li class="nav-item">
-              <router-link class="nav-link" to="/login" v-if="!user">LOGIN</router-link>
+              <router-link class="nav-link" to="/register" v-if="!user">Register</router-link>
             </li>
             <li class="nav-item">
-              <router-link class="nav-link" to="/register" v-if="!user">REGISTER</router-link>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" role="button" @click="logoutOnClick" v-if="user">LOGOUT</a>
+              <a class="nav-link" role="button" @click="logoutOnClick" v-if="user">Logout</a>
             </li>
           </ul>
         </div>
@@ -59,6 +55,7 @@ export default {
 <style scoped>
 nav {
   background-color: #b6c1c3;
+  opacity: 0.6;
 }
 </style>
 

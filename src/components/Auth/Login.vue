@@ -9,9 +9,9 @@
           id="inputEmail"
           class="form-control"
           placeholder="Email address"
-          required
           autocomplete="email"
           autofocus
+          required
           v-model="user.email"
         >
       </div>
@@ -27,15 +27,20 @@
           v-model="user.password"
         >
       </div>
-      <button class="btn btn-dark" type="submit">Log in</button>
+      <!-- <error-handler v-if="errors">{{ errors }}</error-handler> -->
+      <button class="btn btn-outline-dark" type="submit">Log in</button>
     </form>
   </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from "vuex";
+import ErrorHandler from "./../partials/ErrorHandler";
 export default {
   name: "Login",
+  components: {
+    ErrorHandler
+  },
   data() {
     return {
       user: Object

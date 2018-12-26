@@ -12,7 +12,7 @@ export default {
     errors: null
   },
   mutations: {
-    SET_DATA(state,  user ) {
+    SET_DATA(state, user) {
       (state.user = user), (state.errors = null);
     },
     SET_ERRORS(state, errors) {
@@ -25,7 +25,7 @@ export default {
         commit('SET_DATA', await authService.login(email, password));
         router.push({ name: 'home' });
       } catch (error) {
-        commit('SET_ERRORS', error.response);
+        commit('SET_ERRORS', error.response.data.message);
       }
     },
 
