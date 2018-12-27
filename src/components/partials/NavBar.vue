@@ -25,7 +25,7 @@
               <router-link class="nav-link" to="/register" v-if="!user">Register</router-link>
             </li>
             <li class="nav-item">
-              <a class="nav-link" role="button" @click="logoutOnClick" v-if="user">Logout</a>
+              <a class="nav-link" @click="logoutOnClick" v-if="user">Logout</a>
             </li>
           </ul>
         </div>

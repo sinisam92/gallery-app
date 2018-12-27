@@ -27,10 +27,7 @@ const routes = [
   {
     path: '/galleries/:id',
     name: 'single-gallery',
-    component: SingleGallery,
-    meta: {
-      auth: false
-    }
+    component: SingleGallery
   },
   {
     path: '/login',
