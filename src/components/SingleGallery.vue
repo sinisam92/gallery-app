@@ -35,17 +35,23 @@
       <p class="comment-author">Author: {{ comment.user.first_name }} {{ comment.user.last_name }}</p>
       <p class="comment-author">Created :{{ comment.created_at | diffForHumans }}</p>
       <p class="comment-author">{{ comment.body }}</p>
+      <button
+        class="btn btn-outline-secondary"
+        @click="deleteComment(comment.id)"
+        v-if="user"
+      >Delete</button>
       <hr>
     </div>
-    <div v-if="user">
-      <b-form-textarea
-        id="textarea1"
-        v-model="newComment.body"
-        placeholder="Enter something"
-        :rows="3"
-        :max-rows="6"
-      ></b-form-textarea>
-      <b-button variant="outline-secondary" class="comment-button" @click="addComment">Submit</b-button>
+    <div class="form-group">
+      <form v-if="user" @keyup.enter="addComment">
+        <label for="exampleFormControlTextarea1">Leave a comment</label>
+        <textarea
+          class="form-control"
+          v-model="newComment.body"
+          id="exampleFormControlTextarea1"
+          rows="3"
+        ></textarea>
+      </form>
     </div>
   </div>
 </template>
@@ -74,8 +80,23 @@ export default {
           this.newComment = "";
         })
         .catch(error => {
-          this.errors = error;
+          console.log(error);
         });
+    },
+    deleteComment(id) {
+      let youSure = prompt(`Are you sure? Yes/No`);
+      if (youSure == "Yes") {
+        commentService
+          .delete(id)
+          .then(response => {
+            this.gallery = this.gallery.comments.filter(
+              comment => comment.id !== id
+            );
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      }
     }
   },
   computed: {
@@ -87,7 +108,6 @@ export default {
     galleriesService.getSingleGallery(to.params.id).then(response => {
       next(vm => {
         vm.gallery = response.data;
-        console.log(response.data);
       });
     });
   }
@@ -107,5 +127,8 @@ hr {
 .comment-button {
   margin-top: 10px;
   float: right;
+}
+.btn-outline-secondary {
+  text-align: right;
 }
 </style>

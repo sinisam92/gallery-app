@@ -4,6 +4,9 @@ class CommentService {
   addComment(galleryId, body) {
     return http.post(`galleries/${galleryId}/comments`, body);
   }
+  delete(id) {
+    return http.delete(`comments/${id}`);
+  }
 }
 
 const commentService = new CommentService();
