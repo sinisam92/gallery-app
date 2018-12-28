@@ -48,6 +48,14 @@ const routes = [
     component: CreateGallery
   },
   {
+    path: '/edit-gallery/:id',
+    name: 'edit',
+    component: CreateGallery,
+    meta: {
+      auth: true
+    }
+  },
+  {
     path: '/login',
     name: 'login',
     component: Login,

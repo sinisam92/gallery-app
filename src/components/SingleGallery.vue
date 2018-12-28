@@ -6,9 +6,17 @@
     </router-link>Created At:
     <small class="title">{{ gallery.created_at }}</small>
     <h4 class="card h-100">{{ gallery.description }}</h4>
+    <div class="btn-group" v-if="currentUserId == userId">
+      <router-link
+        :to="{ name: 'edit', params: { id: currentUserId }}"
+        class="btn btn-outline-dark"
+      >Edit</router-link>
+      <button class="btn btn-outline-dark" @click="deleteGallery">Delete</button>
+    </div>
     <div>
       <b-carousel
         id="carousel1"
+        class="carousel-slide"
         controls
         indicators
         :interval="4000"
@@ -36,14 +44,14 @@
       <p class="comment-author">Created :{{ comment.created_at | diffForHumans }}</p>
       <p class="comment-author">{{ comment.body }}</p>
       <button
-        v-if="comment.user_id == user.id"
+        v-if="comment.user_id == currentUserId"
         class="btn btn-outline-secondary"
-        @click="deleteComment(comment.id)"
+        @click="deleteComment(comment.id, index)"
       >Delete</button>
       <hr>
     </div>
     <div class="form-group">
-      <form v-if="user" @keyup.enter="addComment">
+      <form v-if="currentUserId" @keyup.enter="addComment">
         <label for="exampleFormControlTextarea1">Leave a comment</label>
         <textarea
           class="form-control"
@@ -84,20 +92,32 @@ export default {
         });
     },
     deleteComment(id, index) {
-      this.gallery.comments.splice(index, 1);
-      commentService.delete(id);
+      if (confirm("Are you sure?")) {
+        this.gallery.comments.splice(index, 1);
+        commentService.delete(id);
+      }
     },
     onSlideStart(slide) {
       this.sliding = true;
     },
     onSlideEnd(slide) {
       this.sliding = false;
+    },
+    deleteGallery() {
+      if (this.userId == this.currentUserId) {
+        if (confirm("Are you sure?")) {
+          galleriesService.deleteGallery(this.$route.params.id).then(() => {
+            this.$router.push({ name: "my-galleries" });
+          });
+        }
+      }
     }
   },
   computed: {
-    ...mapGetters({
-      user: "getUser"
-    })
+    currentUserId() {
+      let id = Number(localStorage.getItem("id"));
+      return id ? id : 0;
+    }
   },
   beforeRouteEnter(to, from, next) {
     galleriesService.getSingleGallery(to.params.id).then(response => {
@@ -127,5 +147,8 @@ hr {
 }
 .btn-outline-secondary {
   text-align: right;
+}
+.carousel-slide {
+  box-shadow: 10px 10px 5px #aaaaaa;
 }
 </style>
