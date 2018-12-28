@@ -4,6 +4,9 @@ import AppGalleries from './components/AppGalleries';
 import Login from './components/Auth/Login';
 import Register from './components/Auth/Register';
 import SingleGallery from './components/SingleGallery';
+import AuthorGallery from './components/AuthorGallery';
+import MyGalleries from './components/MyGalleries';
+import CreateGallery from './components/CreateGallery';
 import BootstrapVue from 'bootstrap-vue';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
@@ -28,6 +31,21 @@ const routes = [
     path: '/galleries/:id',
     name: 'single-gallery',
     component: SingleGallery
+  },
+  {
+    path: '/authors/:id',
+    name: 'authors-gallery',
+    component: AuthorGallery
+  },
+  {
+    path: '/my-galleries',
+    name: 'my-galleries',
+    component: MyGalleries
+  },
+  {
+    path: '/create',
+    name: 'create-gallery',
+    component: CreateGallery
   },
   {
     path: '/login',

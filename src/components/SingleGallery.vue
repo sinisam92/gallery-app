@@ -1,7 +1,7 @@
 <template>
   <div class="root">
     <h1 class="title">{{ gallery.title }}</h1>Author
-    <router-link to="#">
+    <router-link :to="{ name: 'authors-gallery', params: { id: userId }}">
       <h4 class="title author">{{ username }}</h4>
     </router-link>Created At:
     <small class="title">{{ gallery.created_at }}</small>
@@ -69,6 +69,7 @@ export default {
       gallery: Object,
       newComment: {},
       username: null,
+      userId: null,
       slide: 0,
       sliding: null,
       errors: null
@@ -102,6 +103,7 @@ export default {
     galleriesService.getSingleGallery(to.params.id).then(response => {
       next(vm => {
         vm.gallery = response;
+        vm.userId = response.user_id;
         vm.username = response.user.first_name + " " + response.user.last_name;
       });
     });

@@ -26,9 +26,9 @@ export default {
   color: #2c3e50;
   margin-top: 60px;
   font-family: "Noto Sans", sans-serif;
+  margin-bottom: 40px;
 }
 .container {
   width: 100%;
-  margin-bottom: 40px;
 }
 </style>

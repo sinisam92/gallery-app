@@ -12,7 +12,7 @@
           </router-link>
           <p>Author:</p>
           <h4>{{ gallery.user.first_name }} {{ gallery.user.last_name }}</h4>
-          <small>Created at: {{ gallery.created_at | formatDate }}</small>
+          <small>Created at: {{ gallery.created_at }}</small>
           <p class="card-text"></p>
         </div>
       </div>
@@ -23,12 +23,10 @@
 
 <script>
 import galleriesService from "./../services/galleries-service";
-import { DateMixin } from "./../utils/mixins";
 import Search from "./../components/partials/Search";
-
+import { mapGetters } from "vuex";
 export default {
-  name: "AllGalleries",
-  mixins: [DateMixin],
+  name: "MyGalleries",
   components: {
     Search
   },
@@ -39,20 +37,28 @@ export default {
       term: ""
     };
   },
+  computed: {
+    ...mapGetters({
+      user: "getUser"
+    })
+  },
   methods: {
     loadMore() {
       this.page++;
-      galleriesService.getGalleries(this.page, this.term).then(galleries => {
-        this.galleries.push(...galleries);
-      });
+      galleriesService
+        .getUsersGalleries(this.$route.params.id, this.page, this.term)
+        .then(galleries => {
+          this.galleries.push(...galleries);
+        });
     }
   },
-  beforeRouteEnter(to, from, next) {
-    galleriesService.getGalleries().then(response => {
-      next(vm => {
-        vm.galleries = response;
+  created() {
+    galleriesService
+      .getUsersGalleries(this.user.id, this.page, this.term)
+      .then(response => {
+        this.galleries = response;
+        console.log(this.galleries);
       });
-    });
   }
 };
 </script>
