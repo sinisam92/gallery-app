@@ -2,7 +2,7 @@
   <div class="root">
     <h1 class="title">{{ gallery.title }}</h1>Author
     <router-link to="#">
-      <h4 class="title author">{{ gallery.user.first_name }} {{ gallery.user.last_name }}</h4>
+      <h4 class="title author">{{ username }}</h4>
     </router-link>Created At:
     <small class="title">{{ gallery.created_at }}</small>
     <h4 class="card h-100">{{ gallery.description }}</h4>
@@ -36,9 +36,9 @@
       <p class="comment-author">Created :{{ comment.created_at | diffForHumans }}</p>
       <p class="comment-author">{{ comment.body }}</p>
       <button
+        v-if="comment.user_id == user.id"
         class="btn btn-outline-secondary"
         @click="deleteComment(comment.id)"
-        v-if="user"
       >Delete</button>
       <hr>
     </div>
@@ -68,6 +68,9 @@ export default {
     return {
       gallery: Object,
       newComment: {},
+      username: null,
+      slide: 0,
+      sliding: null,
       errors: null
     };
   },
@@ -76,27 +79,18 @@ export default {
       commentService
         .addComment(this.$route.params.id, this.newComment)
         .then(response => {
-          this.gallery.comments.push(response.data[0]);
-          this.newComment = "";
-        })
-        .catch(error => {
-          console.log(error);
+          this.gallery.comments.push(response);
         });
     },
-    deleteComment(id) {
-      let youSure = prompt(`Are you sure? Yes/No`);
-      if (youSure == "Yes") {
-        commentService
-          .delete(id)
-          .then(response => {
-            this.gallery = this.gallery.comments.filter(
-              comment => comment.id !== id
-            );
-          })
-          .catch(error => {
-            console.log(error);
-          });
-      }
+    deleteComment(id, index) {
+      this.gallery.comments.splice(index, 1);
+      commentService.delete(id);
+    },
+    onSlideStart(slide) {
+      this.sliding = true;
+    },
+    onSlideEnd(slide) {
+      this.sliding = false;
     }
   },
   computed: {
@@ -107,7 +101,8 @@ export default {
   beforeRouteEnter(to, from, next) {
     galleriesService.getSingleGallery(to.params.id).then(response => {
       next(vm => {
-        vm.gallery = response.data;
+        vm.gallery = response;
+        vm.username = response.user.first_name + " " + response.user.last_name;
       });
     });
   }

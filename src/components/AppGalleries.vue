@@ -19,11 +19,12 @@
         </div>
       </div>
     </div>
+    <button class="btn btn-outline-dark" @click="loadMore">Load More</button>
   </div>
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
+import galleriesService from "./../services/galleries-service";
 import { DateMixin } from "./../utils/mixins";
 import Search from "./../components/partials/Search";
 
@@ -34,18 +35,27 @@ export default {
     Search
   },
   data() {
-    return {};
-  },
-  created() {
-    this.getGalleries();
+    return {
+      galleries: [],
+      page: 1,
+      term: ""
+    };
   },
   methods: {
-    ...mapActions(["getGalleries"])
+    loadMore() {
+      this.page++;
+      galleriesService.getGalleries(this.page, this.term).then(galleries => {
+        this.galleries.push(...galleries);
+      });
+    }
   },
-  computed: {
-    ...mapGetters({
-      galleries: "getGalleries"
-    })
+  beforeRouteEnter(to, from, next) {
+    galleriesService.getGalleries().then(response => {
+      next(vm => {
+        vm.galleries = response;
+        console.log(vm.galleries);
+      });
+    });
   }
 };
 </script>
