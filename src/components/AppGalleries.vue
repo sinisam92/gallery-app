@@ -1,13 +1,13 @@
 <template>
   <div>
-    <search></search>
+    <search @search="search"></search>
     <div class="col-lg-6 portfolio-item" v-for="gallery in galleries" :key="gallery.id">
       <div class="card h-100">
         <img class="card-img-top" :src="gallery.images[0].image_url" alt>
         <div class="card-body">
           <router-link :to="{ name: 'single-gallery', params: { id: gallery.id }}">
             <h4 class="card-title">
-              <a href="#">{{ gallery.title }}</a>
+              <h4>{{ gallery.title }}</h4>
             </h4>
           </router-link>
           <p>Author:</p>
@@ -17,7 +17,11 @@
         </div>
       </div>
     </div>
-    <button class="btn btn-outline-dark" @click="loadMore">Load More</button>
+    <button
+      class="btn btn-outline-dark load-more"
+      v-if=" page != last_page"
+      @click="loadMore"
+    >Load More</button>
   </div>
 </template>
 
@@ -36,21 +40,31 @@ export default {
     return {
       galleries: [],
       page: 1,
-      term: ""
+      term: "",
+      last_page: null
     };
   },
   methods: {
     loadMore() {
       this.page++;
       galleriesService.getGalleries(this.page, this.term).then(galleries => {
-        this.galleries.push(...galleries);
+        this.galleries.push(...galleries.data);
+        this.last_page = galleries.last_page;
+      });
+    },
+    search(term) {
+      this.page = 1;
+      this.term = term;
+      galleriesService.getGalleries(this.page, this.term).then(galleries => {
+        this.galleries = galleries.data;
+        this.last_page = galleries.last_page;
       });
     }
   },
   beforeRouteEnter(to, from, next) {
-    galleriesService.getGalleries().then(response => {
+    galleriesService.getGalleries().then(galleries => {
       next(vm => {
-        vm.galleries = response;
+        vm.galleries = galleries.data;
       });
     });
   }
@@ -65,5 +79,7 @@ export default {
 }
 .h-100 {
   box-shadow: 10px 10px 5px #aaaaaa;
+}
+.load-more {
 }
 </style>

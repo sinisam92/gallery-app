@@ -33,7 +33,7 @@ export default {
 
     logout({ commit }) {
       authService.logout();
-      commit('SET_DATA', { user: null });
+      commit('SET_DATA', (this.user = null));
       router.push({ name: 'login' });
     },
 

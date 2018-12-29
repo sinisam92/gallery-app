@@ -3,7 +3,7 @@ import http from './http-service';
 class GalleriesService {
   getGalleries(page = 1, term = '') {
     return http
-      .get(`galleries?page=${page}&term=${term}`)
+      .get('galleries', { params: { page, term } })
       .then(({ data }) => data.galleries);
   }
   getSingleGallery(id) {

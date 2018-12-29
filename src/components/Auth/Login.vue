@@ -27,7 +27,7 @@
           v-model="user.password"
         >
       </div>
-      <!-- <error-handler v-if="errors">{{ errors }}</error-handler> -->
+      <error-handler v-if="errors">{{ errors }}</error-handler>
       <button class="btn btn-outline-dark" type="submit">Log in</button>
     </form>
   </div>

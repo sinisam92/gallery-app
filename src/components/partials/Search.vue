@@ -27,7 +27,7 @@ export default {
   },
   methods: {
     filterGalleries() {
-      this.$emit("searchTerm", this.searchTerm);
+      this.$emit("search", this.searchTerm);
     }
   }
 };

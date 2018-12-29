@@ -1,14 +1,15 @@
 <template>
   <div class="root">
     <h1 class="title">{{ gallery.title }}</h1>Author
-    <router-link :to="{ name: 'authors-gallery', params: { id: userId }}">
+    <router-link :to="{ name: 'authors-gallery', params: { id: currentUserId }}">
       <h4 class="title author">{{ username }}</h4>
-    </router-link>Created At:
+    </router-link>
+
     <small class="title">{{ gallery.created_at }}</small>
     <h4 class="card h-100">{{ gallery.description }}</h4>
     <div class="btn-group" v-if="currentUserId == userId">
       <router-link
-        :to="{ name: 'edit', params: { id: currentUserId }}"
+        :to="{ name: 'edit', params: { id: gallery.id }}"
         class="btn btn-outline-dark"
       >Edit</router-link>
       <button class="btn btn-outline-dark" @click="deleteGallery">Delete</button>
@@ -39,7 +40,7 @@
       </b-carousel>
     </div>
     <hr>
-    <div class="container" v-for="comment in gallery.comments" :key="comment.id">
+    <div class="container" v-for="(comment, index) in gallery.comments" :key="comment.id">
       <p class="comment-author">Author: {{ comment.user.first_name }} {{ comment.user.last_name }}</p>
       <p class="comment-author">Created :{{ comment.created_at | diffForHumans }}</p>
       <p class="comment-author">{{ comment.body }}</p>
@@ -68,7 +69,6 @@
 import galleriesService from "./../services/galleries-service";
 import commentService from "./../services/comment-service";
 import { DateMixin } from "./../utils/mixins";
-import { mapGetters } from "vuex";
 export default {
   name: "Singlegallery",
   mixins: [DateMixin],
@@ -87,8 +87,9 @@ export default {
     addComment() {
       commentService
         .addComment(this.$route.params.id, this.newComment)
-        .then(response => {
-          this.gallery.comments.push(response);
+        .then(galleries => {
+          this.gallery.comments.push(galleries);
+          this.newComment = {};
         });
     },
     deleteComment(id, index) {
@@ -120,11 +121,11 @@ export default {
     }
   },
   beforeRouteEnter(to, from, next) {
-    galleriesService.getSingleGallery(to.params.id).then(response => {
+    galleriesService.getSingleGallery(to.params.id).then(gallery => {
       next(vm => {
-        vm.gallery = response;
-        vm.userId = response.user_id;
-        vm.username = response.user.first_name + " " + response.user.last_name;
+        vm.gallery = gallery;
+        vm.userId = gallery.user_id;
+        vm.username = gallery.user.first_name + " " + gallery.user.last_name;
       });
     });
   }

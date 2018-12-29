@@ -70,6 +70,9 @@
           required
           v-model="user.password_confirmation"
         >
+        <div v-if="errors">
+          <error-handler v-if="errors.password_confirmation">{{ errors.password_confirmation[0] }}</error-handler>
+        </div>
       </div>
       <div class="form-group">
         <input

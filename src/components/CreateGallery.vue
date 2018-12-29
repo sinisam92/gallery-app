@@ -31,6 +31,7 @@
             <input
               v-model="images[index].image_url"
               type="url"
+              pattern="https?://.+(png|jpg|jpeg)"
               class="form-control"
               placeholder="Image Url"
               required
@@ -83,8 +84,6 @@ export default {
     return {
       range: 1,
       gallery: {
-        title: "",
-        description: "",
         images: []
       },
       images: [{ image_url: "" }],
@@ -145,7 +144,7 @@ export default {
     },
 
     editGallery() {
-      if (this.gallery.user.id == localStorage.getItem("id")) {
+      if (this.gallery.user.id == Number(localStorage.getItem("id"))) {
         galleriesService
           .editGallery(this.galleryId, this.gallery)
           .then(() => {
@@ -156,7 +155,9 @@ export default {
             });
           })
           .catch(errors => {
-            this.errors = errors.response.data.errors;
+            this.errors = errors.response;
+            console.log(this.gallery.user.id);
+            console.log(Number(localStorage.getItem("id")));
           });
       }
     }
@@ -169,14 +170,16 @@ export default {
   beforeRouteEnter(to, from, next) {
     next(vm => {
       if (to.params.id) {
-        vm.galleryId = to.params.id;
+        vm.galleryId = Number(to.params.id);
         vm.editing = true;
-        galleriesService.getSingleGallery(vm.galleryId).then(response => {
-          vm.gallery = response;
-          vm.images = response.images;
-          vm.range = response.images.length;
+        galleriesService.getSingleGallery(vm.galleryId).then(gallery => {
+          vm.gallery = gallery;
+          vm.images = gallery.images;
+          vm.range = gallery.images.length;
+          console.log(vm.gallery);
+          console.log(Number(localStorage.getItem("id")));
 
-          if (vm.gallery.user.id != localStorage.getItem("id")) {
+          if (vm.gallery.user.id != Number(localStorage.getItem("id"))) {
             vm.$router.push(from);
           }
         });

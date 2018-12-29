@@ -1,6 +1,6 @@
 <template>
   <div>
-    <search></search>
+    <search @search="search"></search>
     <div class="col-lg-6 portfolio-item" v-for="gallery in galleries" :key="gallery.id">
       <div class="card h-100">
         <img class="card-img-top" :src="gallery.images[0].image_url" alt>
@@ -17,7 +17,11 @@
         </div>
       </div>
     </div>
-    <button class="btn btn-outline-dark" @click="loadMore">Load More</button>
+    <button
+      class="btn btn-outline-dark"
+      v-if="!galleries.length &&  (page != last_page)"
+      @click="loadMore"
+    >Load More</button>
   </div>
 </template>
 
@@ -33,14 +37,17 @@ export default {
     return {
       galleries: [],
       page: 1,
-      term: ""
+      term: "",
+      last_page: null
     };
   },
   created() {
-    galleriesService.getUsersGalleries(this.$route.params.id).then(response => {
-      this.galleries = response;
-      console.log(this.galleries);
-    });
+    galleriesService
+      .getUsersGalleries(this.$route.params.id)
+      .then(galleries => {
+        this.galleries = galleries.data;
+        console.log(this.galleries);
+      });
   },
   methods: {
     loadMore() {
@@ -49,7 +56,16 @@ export default {
         .getUsersGalleries(this.$route.params.id, this.page, this.term)
         .then(galleries => {
           this.galleries.push(...galleries);
+          this.last_page = galleries.last_page;
         });
+    },
+    search(term) {
+      this.page = 1;
+      this.term = term;
+      galleriesService.getGalleries(this.page, this.term).then(galleries => {
+        this.galleries = galleries.data;
+        this.last_page = galleries.last_page;
+      });
     }
   }
 };

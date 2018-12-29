@@ -22,10 +22,7 @@ const routes = [
   {
     path: '/galleries',
     name: 'home',
-    component: AppGalleries,
-    meta: {
-      auth: false
-    }
+    component: AppGalleries
   },
   {
     path: '/galleries/:id',
@@ -35,17 +32,26 @@ const routes = [
   {
     path: '/authors/:id',
     name: 'authors-gallery',
-    component: AuthorGallery
+    component: AuthorGallery,
+    meta: {
+      auth: true
+    }
   },
   {
     path: '/my-galleries',
     name: 'my-galleries',
-    component: MyGalleries
+    component: MyGalleries,
+    meta: {
+      auth: true
+    }
   },
   {
     path: '/create',
     name: 'create-gallery',
-    component: CreateGallery
+    component: CreateGallery,
+    meta: {
+      auth: true
+    }
   },
   {
     path: '/edit-gallery/:id',
