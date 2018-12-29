@@ -155,9 +155,7 @@ export default {
             });
           })
           .catch(errors => {
-            this.errors = errors.response;
-            console.log(this.gallery.user.id);
-            console.log(Number(localStorage.getItem("id")));
+            this.errors = error.response.data.message;
           });
       }
     }
@@ -176,8 +174,6 @@ export default {
           vm.gallery = gallery;
           vm.images = gallery.images;
           vm.range = gallery.images.length;
-          console.log(vm.gallery);
-          console.log(Number(localStorage.getItem("id")));
 
           if (vm.gallery.user.id != Number(localStorage.getItem("id"))) {
             vm.$router.push(from);

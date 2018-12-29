@@ -30,13 +30,6 @@ export default {
         commit('SET_ERRORS', error.response.data.message);
       }
     },
-
-    logout({ commit }) {
-      authService.logout();
-      commit('SET_DATA', (this.user = null));
-      router.push({ name: 'login' });
-    },
-
     async register({ commit }, user) {
       try {
         commit('SET_DATA', await authService.register(user));
@@ -44,6 +37,11 @@ export default {
       } catch (error) {
         commit('SET_ERRORS', error);
       }
+    },
+    logout({ commit }) {
+      authService.logout();
+      commit('SET_DATA', (this.user = null));
+      router.push({ name: 'login' });
     }
   },
   getters: {

@@ -1,12 +1,12 @@
 <template>
   <div class="root">
     <h1 class="title">{{ gallery.title }}</h1>Author
-    <router-link :to="{ name: 'authors-gallery', params: { id: currentUserId }}">
+    <router-link :to="{ name: 'authors-gallery', params: { id: userId }}">
       <h4 class="title author">{{ username }}</h4>
     </router-link>
 
     <small class="title">{{ gallery.created_at }}</small>
-    <h4 class="card h-100">{{ gallery.description }}</h4>
+    <h4 class="card h-100 description">{{ gallery.description }}</h4>
     <div class="btn-group" v-if="currentUserId == userId">
       <router-link
         :to="{ name: 'edit', params: { id: gallery.id }}"
@@ -149,7 +149,13 @@ hr {
 .btn-outline-secondary {
   text-align: right;
 }
+.btn-outline-dark {
+  margin-bottom: 4px;
+}
 .carousel-slide {
   box-shadow: 10px 10px 5px #aaaaaa;
+}
+.description {
+  background-color: #e1e1e1;
 }
 </style>

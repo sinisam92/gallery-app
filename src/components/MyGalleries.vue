@@ -71,6 +71,7 @@ export default {
       .getUsersGalleries(this.user.id, this.page, this.term)
       .then(galleries => {
         this.galleries = galleries.data;
+        console.log(this.galleries);
       });
   }
 };

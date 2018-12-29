@@ -46,7 +46,6 @@ export default {
       .getUsersGalleries(this.$route.params.id)
       .then(galleries => {
         this.galleries = galleries.data;
-        console.log(this.galleries);
       });
   },
   methods: {
